@@ -1,0 +1,46 @@
+{
+  "Small GTP": {
+    "env_id": "tarware-medium-8agvs-4pickers-partialobs-v1",
+    "num_episodes": 10,
+    "seed": 42,
+    "pick_rates": [
+      57.6,
+      53.28,
+      56.16,
+      51.84,
+      51.84,
+      53.28,
+      56.16,
+      56.16,
+      51.84,
+      37.44
+    ],
+    "mean": 52.55999999999999,
+    "ci_half_width": 3.5514421183513605,
+    "paper_cta": 52.7,
+    "paper_hiac": 66.7,
+    "diff_pct_vs_paper_cta": -0.2656546489563848
+  },
+  "Large GTP": {
+    "env_id": "tarware-extralarge-14agvs-7pickers-partialobs-v1",
+    "num_episodes": 10,
+    "seed": 42,
+    "pick_rates": [
+      61.92,
+      67.68,
+      57.6,
+      61.92,
+      64.8,
+      66.24,
+      64.8,
+      72.0,
+      66.24,
+      60.48
+    ],
+    "mean": 64.36800000000001,
+    "ci_half_width": 2.526183772887475,
+    "paper_cta": 67.1,
+    "paper_hiac": 86.0,
+    "diff_pct_vs_paper_cta": -4.071535022354673
+  }
+}

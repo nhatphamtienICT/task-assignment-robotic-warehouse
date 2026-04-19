@@ -1,0 +1,107 @@
+{
+  "tiny\n(1x3)": {
+    "env_id": "tarware-tiny-3agvs-2pickers-partialobs-v1",
+    "num_episodes": 10,
+    "seed": 42,
+    "is_paper_reference": false,
+    "paper_cta": null,
+    "pick_rates": [
+      23.04,
+      30.24,
+      30.24,
+      25.92,
+      27.36,
+      33.12,
+      33.12,
+      30.24,
+      30.24,
+      30.24
+    ],
+    "mean": 29.375999999999998,
+    "ci_half_width": 1.9372257673281135
+  },
+  "small\n(2x3)": {
+    "env_id": "tarware-small-5agvs-3pickers-partialobs-v1",
+    "num_episodes": 10,
+    "seed": 42,
+    "is_paper_reference": false,
+    "paper_cta": null,
+    "pick_rates": [
+      43.2,
+      40.32,
+      14.4,
+      37.44,
+      43.2,
+      38.88,
+      36.0,
+      40.32,
+      43.2,
+      38.88
+    ],
+    "mean": 37.583999999999996,
+    "ci_half_width": 5.279388706431835
+  },
+  "medium*\n(2x5)": {
+    "env_id": "tarware-medium-8agvs-4pickers-partialobs-v1",
+    "num_episodes": 10,
+    "seed": 42,
+    "is_paper_reference": true,
+    "paper_cta": 52.7,
+    "pick_rates": [
+      57.6,
+      53.28,
+      56.16,
+      51.84,
+      51.84,
+      53.28,
+      56.16,
+      56.16,
+      51.84,
+      37.44
+    ],
+    "mean": 52.55999999999999,
+    "ci_half_width": 3.5514421183513605
+  },
+  "large\n(3x5)": {
+    "env_id": "tarware-large-10agvs-5pickers-partialobs-v1",
+    "num_episodes": 10,
+    "seed": 42,
+    "is_paper_reference": false,
+    "paper_cta": null,
+    "pick_rates": [
+      48.96,
+      60.48,
+      59.04,
+      57.6,
+      67.68,
+      51.84,
+      53.28,
+      54.72,
+      56.16,
+      60.48
+    ],
+    "mean": 57.024,
+    "ci_half_width": 3.291455725602276
+  },
+  "extralarge*\n(4x7)": {
+    "env_id": "tarware-extralarge-14agvs-7pickers-partialobs-v1",
+    "num_episodes": 10,
+    "seed": 42,
+    "is_paper_reference": true,
+    "paper_cta": 67.1,
+    "pick_rates": [
+      61.92,
+      67.68,
+      57.6,
+      61.92,
+      64.8,
+      66.24,
+      64.8,
+      72.0,
+      66.24,
+      60.48
+    ],
+    "mean": 64.36800000000001,
+    "ci_half_width": 2.526183772887475
+  }
+}

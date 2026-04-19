@@ -1,0 +1,12 @@
+# Core environment dependencies
+gymnasium
+numpy
+networkx==3.2.1
+six==1.16.0
+pyglet==1.5.11
+
+# A* pathfinding (pre-built wheel for Windows/Linux/Mac, no compiler needed)
+pyastar2d
+
+# Experiment dependencies
+matplotlib

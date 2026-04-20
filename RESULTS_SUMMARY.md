@@ -8,6 +8,94 @@ Logistics with Robotic and Human Co-Workers*. arXiv: 2212.11498v3
 
 ---
 
+## 0. Project Overview: What This Project Is About
+
+### The Real-World Problem
+
+Imagine an Amazon warehouse. Thousands of products sit on shelves. When a customer places an
+order online, workers must find the right items, pick them up, and ship them out — as fast as
+possible. The speed of this process is called the **pick rate** (how many order-lines are
+completed per hour).
+
+Modern warehouses use two types of robots working together:
+
+- **AGVs** (Autonomous Guided Vehicles) 🤖 — small robot carts that drive around and carry
+  shelves from storage to a drop-off point.
+- **Pickers** 🦾 — robots (or humans) that load and unload items between shelves and AGVs.
+
+The central challenge: **how should dozens of these robots coordinate so the warehouse
+completes as many orders per hour as possible?**
+
+### Why Is This Hard?
+
+With dozens of robots and hundreds of shelves, every robot must constantly decide *where to
+go next*. Bad decisions cause:
+- **Collisions** — two robots trying to reach the same shelf
+- **Deadlocks** — robots blocking each other in narrow aisles
+- **Idle time** — robots waiting with nothing to do while orders pile up
+
+A human engineer can write simple rules like *"always send the nearest robot to the nearest
+shelf"* — called a **heuristic**. These rules work, but they are **reactive**: they respond
+to the current moment and cannot plan ahead or adapt to patterns.
+
+### What the Paper Proposes
+
+The paper replaces hand-written rules with **Multi-Agent Reinforcement Learning (MARL)** —
+the same family of AI that learned to play chess and Go, now applied to warehouse robots.
+Each robot runs thousands of simulated episodes, learns from its mistakes, and develops a
+strategy that maximises overall pick rate.
+
+The key innovation is a **3-layer hierarchy** to deal with the huge number of possible
+decisions:
+
+```
+MANAGER  (one shared brain)
+   │  "Robot 3, go work in Zone 5"
+   ▼
+WORKERS  (each robot has its own brain)
+   │  "I'll pick up Shelf #47 in Zone 5"
+   ▼
+A* PATHFINDING  (simple GPS — no learning needed)
+      physically drives the robot there
+```
+
+The Manager reduces each robot's decision from *"which of 200 shelves?"* down to *"which of
+10 zones?"* — making learning dramatically faster. Workers then choose within their assigned
+zone. This is called **hierarchical RL**.
+
+### What the Paper Shows
+
+The paper tests on two simulation environments:
+
+| Environment | Description | Simulator |
+|-------------|-------------|-----------|
+| **PTG** (Person-to-Goods) | Human pickers walk through warehouse with AGV assistance | Dematic (commercial, not public) |
+| **GTP** (Goods-to-Person) | Robots bring shelves to stationary human pickers | **TA-RWARE** (open-source, this repo) |
+
+Their hierarchical AI (**HIAC**) beats the best human-written rule (**CTA**) by **~27%**,
+and the gap grows in larger warehouses — meaning the AI *scales* better than rules.
+
+### What We Do in This Project
+
+We cannot train the full AI (requires weeks of GPU compute and a proprietary simulator for
+the PTG experiments). Instead, our project:
+
+1. **Validates the paper's baseline** — run the CTA rule and confirm it matches the paper's
+   reported numbers within ≤3.2% ✅
+2. **Establishes a performance ladder** — measure Random << CTA << Paper's RL, showing
+   exactly how much each level of intelligence contributes ✅
+3. **Extends the scalability analysis** — the paper tests only 2 warehouse sizes; we test
+   all 5 to identify *where* the rule starts to struggle ✅
+4. **Discovers CTA's breaking point** — by varying request queue size, we prove the rule
+   saturates at just 10 concurrent requests regardless of how many more are added, directly
+   explaining *why* RL is needed ✅
+
+In short: **we reproduce the paper's key baseline, then run original experiments that reveal
+the fundamental limitations of simple rules — building the case for why the paper's AI
+approach matters.**
+
+---
+
 ## 1. Paper Overview
 
 The paper tackles the **order-picking problem**: how a mixed fleet of AGVs (autonomous guided

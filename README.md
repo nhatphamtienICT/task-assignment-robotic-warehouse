@@ -1,4 +1,4 @@
-
+- Read the RESULTS_SUMMARY.MD for project overview, implementation and results.
  <p align="center">TA-RWARE: Task-Assignment Multi-Robot Warehouse </p>
  <p align="center">
  <img width="550px" src="docs/img/tarware_explanation.png" align="center" alt="Task-Assignment Multi-Robot Warehouse (RWARE)" />

@@ -12,15 +12,18 @@ Usage
     python experiments/run_all.py --only 1
     python experiments/run_all.py --only 2
     python experiments/run_all.py --only 3
+    python experiments/run_all.py --only 4
 
 Output files
 ------------
     experiments/results/exp1_results.json
     experiments/results/exp2_results.json
     experiments/results/exp3_results.json
+    experiments/results/exp4_results.json
     experiments/plots/exp1_bar.png
     experiments/plots/exp2_comparison.png
     experiments/plots/exp3_scalability.png
+    experiments/plots/exp4_queue_sensitivity.png
 """
 
 from __future__ import annotations
@@ -63,17 +66,18 @@ def main() -> None:
         help="Base random seed (default: 42)",
     )
     parser.add_argument(
-        "--only", type=int, choices=[1, 2, 3], default=None,
+        "--only", type=int, choices=[1, 2, 3, 4], default=None,
         help="Run only one experiment by number",
     )
     args = parser.parse_args()
 
     # Import after dependency check so errors are clear
-    import experiments.exp1_cta_baseline as exp1
-    import experiments.exp2_random_vs_cta as exp2
-    import experiments.exp3_scalability   as exp3
+    import experiments.exp1_cta_baseline    as exp1
+    import experiments.exp2_random_vs_cta  as exp2
+    import experiments.exp3_scalability    as exp3
+    import experiments.exp4_queue_sensitivity as exp4
 
-    run_flags = {1: True, 2: True, 3: True}
+    run_flags = {1: True, 2: True, 3: True, 4: True}
     if args.only:
         run_flags = {k: (k == args.only) for k in run_flags}
 
@@ -99,6 +103,12 @@ def main() -> None:
         t0 = time.time()
         print("\n>>> EXPERIMENT 3 - Scalability Analysis")
         exp3.main(num_episodes=args.num_episodes, seed=args.seed)
+        print(f"    Elapsed: {time.time()-t0:.1f}s")
+
+    if run_flags[4]:
+        t0 = time.time()
+        print("\n>>> EXPERIMENT 4 - Request Queue Size Sensitivity")
+        exp4.main(num_episodes=args.num_episodes, seed=args.seed)
         print(f"    Elapsed: {time.time()-t0:.1f}s")
 
     print("\n" + "=" * 60)

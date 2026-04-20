@@ -1,0 +1,310 @@
+============================================================
+  TA-RWARE Experiment Suite
+  episodes=500  seed=42
+============================================================
+
+>>> EXPERIMENT 1 - Reproduce Paper CTA Baseline
+
+[Exp 1] Running CTA on Small GTP (tarware-medium-8agvs-4pickers-partialobs-v1)
+        500 episodes | seed=42
+  ep   50/500 | pick_rate=57.60 | running mean=51.12+/-1.87 | deliveries=40 | fps=693
+  ep  100/500 | pick_rate=50.40 | running mean=50.86+/-1.51 | deliveries=35 | fps=727
+  ep  150/500 | pick_rate=53.28 | running mean=51.45+/-1.13 | deliveries=37 | fps=646
+  ep  200/500 | pick_rate=44.64 | running mean=51.81+/-0.90 | deliveries=31 | fps=816
+  ep  250/500 | pick_rate=56.16 | running mean=52.05+/-0.78 | deliveries=39 | fps=770
+  ep  300/500 | pick_rate=48.96 | running mean=52.08+/-0.70 | deliveries=34 | fps=770
+  ep  350/500 | pick_rate=41.76 | running mean=52.19+/-0.63 | deliveries=29 | fps=830
+  ep  400/500 | pick_rate=51.84 | running mean=52.36+/-0.58 | deliveries=36 | fps=789
+  ep  450/500 | pick_rate=56.16 | running mean=52.24+/-0.57 | deliveries=39 | fps=710
+  ep  500/500 | pick_rate=53.28 | running mean=52.16+/-0.54 | deliveries=37 | fps=769
+
+  === Small GTP Results ===
+  Our CTA:    52.16 +/- 0.54
+  Paper CTA:  52.7
+  Difference: -1.0%
+
+[Exp 1] Running CTA on Large GTP (tarware-extralarge-14agvs-7pickers-partialobs-v1)
+        500 episodes | seed=42
+  ep   50/500 | pick_rate=59.04 | running mean=64.17+/-1.21 | deliveries=41 | fps=295
+  ep  100/500 | pick_rate=67.68 | running mean=65.16+/-0.88 | deliveries=47 | fps=278
+  ep  150/500 | pick_rate=63.36 | running mean=65.18+/-0.70 | deliveries=44 | fps=231
+  ep  200/500 | pick_rate=70.56 | running mean=65.04+/-0.62 | deliveries=49 | fps=220
+  ep  250/500 | pick_rate=60.48 | running mean=64.96+/-0.57 | deliveries=42 | fps=230
+  ep  300/500 | pick_rate=61.92 | running mean=65.04+/-0.52 | deliveries=43 | fps=273
+  ep  350/500 | pick_rate=67.68 | running mean=64.92+/-0.49 | deliveries=47 | fps=277
+  ep  400/500 | pick_rate=60.48 | running mean=64.87+/-0.46 | deliveries=42 | fps=295
+  ep  450/500 | pick_rate=57.60 | running mean=64.90+/-0.44 | deliveries=40 | fps=289
+  ep  500/500 | pick_rate=69.12 | running mean=64.93+/-0.41 | deliveries=48 | fps=248
+
+  === Large GTP Results ===
+  Our CTA:    64.93 +/- 0.41
+  Paper CTA:  67.1
+  Difference: -3.2%
+  Results saved to experiments\results\exp1_results.json
+  Plot saved to experiments\plots\exp1_bar.png
+
+[Exp 1] Done.
+  Results : experiments\results\exp1_results.json
+  Plot    : experiments\plots\exp1_bar.png
+    Elapsed: 1318.4s
+
+>>> EXPERIMENT 2 - Random Baseline vs CTA
+
+[Exp 2] Small GTP (tarware-medium-8agvs-4pickers-partialobs-v1)
+  -> Running Random policy...
+    ep   50/500 | pick_rate=10.08 | mean=9.71
+    ep  100/500 | pick_rate=10.08 | mean=9.71
+    ep  150/500 | pick_rate=10.08 | mean=9.57
+    ep  200/500 | pick_rate=8.64 | mean=9.67
+    ep  250/500 | pick_rate=10.08 | mean=9.58
+    ep  300/500 | pick_rate=7.20 | mean=9.57
+    ep  350/500 | pick_rate=8.64 | mean=9.62
+    ep  400/500 | pick_rate=8.64 | mean=9.63
+    ep  450/500 | pick_rate=8.64 | mean=9.64
+    ep  500/500 | pick_rate=7.20 | mean=9.63
+    Done in 425.8s
+  -> Running CTA policy...
+    ep   50/500 | pick_rate=57.60 | mean=51.12
+    ep  100/500 | pick_rate=50.40 | mean=50.86
+    ep  150/500 | pick_rate=53.28 | mean=51.45
+    ep  200/500 | pick_rate=44.64 | mean=51.81
+    ep  250/500 | pick_rate=56.16 | mean=52.05
+    ep  300/500 | pick_rate=48.96 | mean=52.08
+    ep  350/500 | pick_rate=41.76 | mean=52.19
+    ep  400/500 | pick_rate=51.84 | mean=52.36
+    ep  450/500 | pick_rate=56.16 | mean=52.24
+    ep  500/500 | pick_rate=53.28 | mean=52.16
+    Done in 370.1s
+
+  === Small GTP Summary ===
+  Random:     9.63 +/- 0.12
+  Our CTA:    52.16 +/- 0.54  (+441.6% vs random)
+  Paper CTA:  52.7
+  Paper HIAC: 66.7  (RL upper bound)
+
+[Exp 2] Large GTP (tarware-extralarge-14agvs-7pickers-partialobs-v1)
+  -> Running Random policy...
+    ep   50/500 | pick_rate=14.40 | mean=11.23
+    ep  100/500 | pick_rate=17.28 | mean=11.53
+    ep  150/500 | pick_rate=14.40 | mean=11.50
+    ep  200/500 | pick_rate=11.52 | mean=11.57
+    ep  250/500 | pick_rate=11.52 | mean=11.64
+    ep  300/500 | pick_rate=14.40 | mean=11.56
+    ep  350/500 | pick_rate=10.08 | mean=11.63
+    ep  400/500 | pick_rate=11.52 | mean=11.70
+    ep  450/500 | pick_rate=14.40 | mean=11.77
+    ep  500/500 | pick_rate=10.08 | mean=11.80
+    Done in 1213.4s
+  -> Running CTA policy...
+    ep   50/500 | pick_rate=59.04 | mean=64.17
+    ep  100/500 | pick_rate=67.68 | mean=65.16
+    ep  150/500 | pick_rate=63.36 | mean=65.18
+    ep  200/500 | pick_rate=70.56 | mean=65.04
+    ep  250/500 | pick_rate=60.48 | mean=64.96
+    ep  300/500 | pick_rate=61.92 | mean=65.04
+    ep  350/500 | pick_rate=67.68 | mean=64.92
+    ep  400/500 | pick_rate=60.48 | mean=64.87
+    ep  450/500 | pick_rate=57.60 | mean=64.90
+    ep  500/500 | pick_rate=69.12 | mean=64.93
+    Done in 984.4s
+
+  === Large GTP Summary ===
+  Random:     11.80 +/- 0.20
+  Our CTA:    64.93 +/- 0.41  (+450.1% vs random)
+  Paper CTA:  67.1
+  Paper HIAC: 86.0  (RL upper bound)
+  Results saved to experiments\results\exp2_results.json
+  Plot saved to experiments\plots\exp2_comparison.png
+
+[Exp 2] Done.
+  Results : experiments\results\exp2_results.json
+  Plot    : experiments\plots\exp2_comparison.png
+    Elapsed: 2993.9s
+
+>>> EXPERIMENT 3 - Scalability Analysis
+
+[Exp 3] tiny (1x3)  (tarware-tiny-3agvs-2pickers-partialobs-v1)
+        500 episodes | seed=42
+  ep  100/500 | pick_rate=33.12 | mean=29.32+/-0.95 | fps=2278
+  ep  200/500 | pick_rate=30.24 | mean=29.97+/-0.68 | fps=2335
+  ep  300/500 | pick_rate=33.12 | mean=30.00+/-0.55 | fps=2072
+  ep  400/500 | pick_rate=37.44 | mean=29.95+/-0.51 | fps=2195
+  ep  500/500 | pick_rate=30.24 | mean=29.97+/-0.45 | fps=2118
+  Result: 29.97 +/- 0.45
+
+[Exp 3] small (2x3)  (tarware-small-5agvs-3pickers-partialobs-v1)
+        500 episodes | seed=42
+Traceback (most recent call last):
+  File "C:\USTH_Code\Machine_Learning\Final_Project\task-assignment-robotic-warehouse\experiments\run_all.py", line 122, in <module>
+    main()
+  File "C:\USTH_Code\Machine_Learning\Final_Project\task-assignment-robotic-warehouse\experiments\run_all.py", line 105, in main
+    exp3.main(num_episodes=args.num_episodes, seed=args.seed)
+  File "C:\USTH_Code\Machine_Learning\Final_Project\task-assignment-robotic-warehouse\experiments\exp3_scalability.py", line 129, in main
+    results = run(num_episodes=num_episodes, seed=seed)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\USTH_Code\Machine_Learning\Final_Project\task-assignment-robotic-warehouse\experiments\exp3_scalability.py", line 90, in run
+    infos, g_ret, ep_ret = heuristic_episode(raw_env, seed=seed + ep)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\USTH_Code\Machine_Learning\Final_Project\task-assignment-robotic-warehouse\tarware\heuristic.py", line 105, in heuristic_episode
+    closest_location_id = empty_location_ids[np.argmin(closest_empty_location_distances)]
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\OS\AppData\Local\Programs\Python\Python311\Lib\site-packages\numpy\_core\fromnumeric.py", line 1414, in argmin
+    return _wrapfunc(a, 'argmin', axis=axis, out=out, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\OS\AppData\Local\Programs\Python\Python311\Lib\site-packages\numpy\_core\fromnumeric.py", line 51, in _wrapfunc
+    return _wrapit(obj, method, *args, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\OS\AppData\Local\Programs\Python\Python311\Lib\site-packages\numpy\_core\fromnumeric.py", line 43, in _wrapit
+    result = getattr(arr, method)(*args, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: attempt to get argmin of an empty sequence
+============================================================
+  TA-RWARE Experiment Suite
+  episodes=500  seed=42
+============================================================
+
+>>> EXPERIMENT 3 - Scalability Analysis
+
+[Exp 3] tiny (1x3)  (tarware-tiny-3agvs-2pickers-partialobs-v1)
+        500 episodes | seed=42
+  ep  100/500 | pick_rate=33.12 | mean=29.32+/-0.95 | fps=2153
+  ep  200/500 | pick_rate=30.24 | mean=29.97+/-0.68 | fps=2245
+  ep  300/500 | pick_rate=33.12 | mean=30.00+/-0.55 | fps=2033
+  ep  400/500 | pick_rate=37.44 | mean=29.95+/-0.51 | fps=2122
+  ep  500/500 | pick_rate=30.24 | mean=29.97+/-0.45 | fps=1840
+  Result: 29.97 +/- 0.45
+
+[Exp 3] small (2x3)  (tarware-small-5agvs-3pickers-partialobs-v1)
+        500 episodes | seed=42
+  ep  100/500 | pick_rate=37.44 | mean=40.38+/-0.94 | fps=925
+  ep  200/500 | pick_rate=38.88 | mean=40.05+/-0.72 | fps=977
+  ep  300/500 | pick_rate=40.32 | mean=40.02+/-0.53 | fps=904
+  ep  400/500 | pick_rate=41.76 | mean=39.85+/-0.46 | fps=936
+  ep  500/500 | pick_rate=47.52 | mean=39.72+/-0.42 | fps=1259
+  Result: 39.72 +/- 0.42
+
+[Exp 3] medium* (2x5) [paper ref]  (tarware-medium-8agvs-4pickers-partialobs-v1)
+        500 episodes | seed=42
+  ep  100/500 | pick_rate=50.40 | mean=50.86+/-1.51 | fps=597
+  ep  200/500 | pick_rate=44.64 | mean=51.81+/-0.90 | fps=764
+  ep  300/500 | pick_rate=48.96 | mean=52.08+/-0.70 | fps=743
+  ep  400/500 | pick_rate=51.84 | mean=52.36+/-0.58 | fps=510
+  ep  500/500 | pick_rate=53.28 | mean=52.16+/-0.54 | fps=673
+  Result: 52.16 +/- 0.54  (paper CTA = 52.7, diff = -1.0%)
+
+[Exp 3] large (3x5)  (tarware-large-10agvs-5pickers-partialobs-v1)
+        500 episodes | seed=42
+  ep  100/500 | pick_rate=51.84 | mean=56.53+/-0.92 | fps=483
+  ep  200/500 | pick_rate=48.96 | mean=56.63+/-0.61 | fps=529
+  ep  300/500 | pick_rate=63.36 | mean=56.57+/-0.51 | fps=440
+  ep  400/500 | pick_rate=59.04 | mean=56.25+/-0.47 | fps=376
+  ep  500/500 | pick_rate=48.96 | mean=56.26+/-0.43 | fps=431
+  Result: 56.26 +/- 0.43
+
+[Exp 3] extralarge* (4x7) [paper ref]  (tarware-extralarge-14agvs-7pickers-partialobs-v1)
+        500 episodes | seed=42
+  ep  100/500 | pick_rate=67.68 | mean=65.16+/-0.88 | fps=220
+  ep  200/500 | pick_rate=70.56 | mean=65.04+/-0.62 | fps=214
+  ep  300/500 | pick_rate=61.92 | mean=65.04+/-0.52 | fps=197
+  ep  400/500 | pick_rate=60.48 | mean=64.87+/-0.46 | fps=253
+  ep  500/500 | pick_rate=69.12 | mean=64.93+/-0.41 | fps=243
+  Result: 64.93 +/- 0.41  (paper CTA = 67.1, diff = -3.2%)
+  Results saved to experiments\results\exp3_results.json
+  Plot saved to experiments\plots\exp3_scalability.png
+
+[Exp 3] Summary:
+  tiny (1x3)                 29.97 +/- 0.45
+  small (2x3)                39.72 +/- 0.42
+  medium* (2x5)              52.16 +/- 0.54  paper CTA = 52.7
+  large (3x5)                56.26 +/- 0.43
+  extralarge* (4x7)          64.93 +/- 0.41  paper CTA = 67.1
+
+  Results : experiments\results\exp3_results.json
+  Plot    : experiments\plots\exp3_scalability.png
+    Elapsed: 27560.7s
+
+============================================================
+  All experiments done in 27560.7s
+  Results in: experiments/results/
+  Plots   in: experiments/plots/
+============================================================
+============================================================
+  TA-RWARE Experiment Suite
+  episodes=500  seed=42
+============================================================
+
+>>> EXPERIMENT 4 - Request Queue Size Sensitivity
+
+[Exp 4] queue_size=5 | medium-8agvs-4pickers
+        500 episodes | seed=42
+  ep  100/500 | pick_rate=44.64 | mean=44.54+/-1.91 | fps=552
+  ep  200/500 | pick_rate=53.28 | mean=44.64+/-1.31 | fps=661
+  ep  300/500 | pick_rate=17.28 | mean=44.83+/-1.08 | fps=835
+  ep  400/500 | pick_rate=54.72 | mean=44.99+/-0.91 | fps=519
+  ep  500/500 | pick_rate=53.28 | mean=44.57+/-0.86 | fps=560
+  Result: 44.57 +/- 0.86
+
+[Exp 4] queue_size=10 | medium-8agvs-4pickers
+        500 episodes | seed=42
+  ep  100/500 | pick_rate=50.40 | mean=51.60+/-1.13 | fps=566
+  ep  200/500 | pick_rate=48.96 | mean=52.16+/-0.76 | fps=814
+  ep  300/500 | pick_rate=47.52 | mean=52.10+/-0.61 | fps=700
+  ep  400/500 | pick_rate=56.16 | mean=52.36+/-0.52 | fps=527
+  ep  500/500 | pick_rate=60.48 | mean=52.22+/-0.54 | fps=493
+  Result: 52.22 +/- 0.54
+
+[Exp 4] queue_size=20  [paper ref] | medium-8agvs-4pickers
+        500 episodes | seed=42
+  ep  100/500 | pick_rate=50.40 | mean=50.86+/-1.51 | fps=596
+  ep  200/500 | pick_rate=44.64 | mean=51.81+/-0.90 | fps=682
+  ep  300/500 | pick_rate=48.96 | mean=52.08+/-0.70 | fps=675
+  ep  400/500 | pick_rate=51.84 | mean=52.36+/-0.58 | fps=638
+  ep  500/500 | pick_rate=53.28 | mean=52.16+/-0.54 | fps=656
+  Result: 52.16 +/- 0.54  (paper CTA = 52.7, diff = -1.0%)
+
+[Exp 4] queue_size=30 | medium-8agvs-4pickers
+        500 episodes | seed=42
+  ep  100/500 | pick_rate=53.28 | mean=51.28+/-1.31 | fps=632
+  ep  200/500 | pick_rate=56.16 | mean=51.61+/-0.85 | fps=528
+  ep  300/500 | pick_rate=47.52 | mean=51.96+/-0.66 | fps=670
+  ep  400/500 | pick_rate=51.84 | mean=52.15+/-0.55 | fps=650
+  ep  500/500 | pick_rate=56.16 | mean=51.94+/-0.53 | fps=658
+  Result: 51.94 +/- 0.53
+
+[Exp 4] queue_size=40 | medium-8agvs-4pickers
+        500 episodes | seed=42
+  ep  100/500 | pick_rate=56.16 | mean=51.44+/-1.30 | fps=745
+  ep  200/500 | pick_rate=48.96 | mean=51.64+/-0.83 | fps=725
+  ep  300/500 | pick_rate=48.96 | mean=51.96+/-0.67 | fps=452
+  ep  400/500 | pick_rate=59.04 | mean=52.29+/-0.57 | fps=621
+  ep  500/500 | pick_rate=56.16 | mean=52.18+/-0.53 | fps=498
+  Result: 52.18 +/- 0.53
+
+[Exp 4] queue_size=50 | medium-8agvs-4pickers
+        500 episodes | seed=42
+  ep  100/500 | pick_rate=48.96 | mean=51.25+/-1.35 | fps=634
+  ep  200/500 | pick_rate=46.08 | mean=51.30+/-0.81 | fps=571
+  ep  300/500 | pick_rate=50.40 | mean=51.55+/-0.69 | fps=702
+  ep  400/500 | pick_rate=56.16 | mean=51.91+/-0.58 | fps=520
+  ep  500/500 | pick_rate=43.20 | mean=51.82+/-0.53 | fps=561
+  Result: 51.82 +/- 0.53
+  Results saved to experiments\results\exp4_results.json
+  Plot saved to experiments\plots\exp4_queue_sensitivity.png
+
+[Exp 4] Summary:
+  queue_size= 5   44.57 +/- 0.86
+  queue_size=10   52.22 +/- 0.54
+  queue_size=20   52.16 +/- 0.54  paper CTA = 52.7
+  queue_size=30   51.94 +/- 0.53
+  queue_size=40   52.18 +/- 0.53
+  queue_size=50   51.82 +/- 0.53
+
+  Results : experiments\results\exp4_results.json
+  Plot    : experiments\plots\exp4_queue_sensitivity.png
+    Elapsed: 2465.6s
+
+============================================================
+  All experiments done in 2465.6s
+  Results in: experiments/results/
+  Plots   in: experiments/plots/
+============================================================

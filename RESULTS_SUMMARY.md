@@ -77,8 +77,8 @@ and the gap grows in larger warehouses — meaning the AI *scales* better than r
 
 ### What We Do in This Project
 
-We cannot train the full AI (requires weeks of GPU compute and a proprietary simulator for
-the PTG experiments). Instead, our project:
+Our work spans two tiers — **heuristic simulation** (no training, CPU-only) and **RL training**
+(neural network, GPU):
 
 1. **Validates the paper's baseline** — run the CTA rule and confirm it matches the paper's
    reported numbers within ≤3.2% ✅
@@ -89,10 +89,13 @@ the PTG experiments). Instead, our project:
 4. **Discovers CTA's breaking point** — by varying request queue size, we prove the rule
    saturates at just 10 concurrent requests regardless of how many more are added, directly
    explaining *why* RL is needed ✅
+5. **Trains an IAC neural network** — uses EPyMARL (the paper authors' own framework) to
+   train an Independent Actor-Critic agent on Small GTP, directly demonstrating that a
+   learned RL policy can surpass the hand-crafted heuristic. Run via `notebooks/iac_colab.ipynb`
+   on Google Colab T4 GPU. ⏳ (run notebooks to complete)
 
-In short: **we reproduce the paper's key baseline, then run original experiments that reveal
-the fundamental limitations of simple rules — building the case for why the paper's AI
-approach matters.**
+In short: **we reproduce the paper's baselines, run original analyses that expose heuristic
+limitations, then train the paper's own RL algorithm to show neural agents can do better.**
 
 ---
 
@@ -144,21 +147,45 @@ Pick rate = order-lines delivered per hour. Higher is better.
 
 ## 2. Scope: Which Experiments from the Paper We Reproduce
 
-The paper (Section V-C) evaluates algorithms across **6 experiment configurations in total**:
+### Paper Experiment Configurations (Table I)
 
-| # | Environment | Paradigm | Simulator | Status |
-|---|-------------|----------|-----------|--------|
-| 1 | PTG Small    | Person-to-Goods | Dematic (commercial, not public) | Cannot reproduce |
-| 2 | PTG Medium   | Person-to-Goods | Dematic (commercial, not public) | Cannot reproduce |
-| 3 | PTG Large    | Person-to-Goods | Dematic (commercial, not public) | Cannot reproduce |
-| 4 | PTG Disjoint | Person-to-Goods | Dematic (commercial, not public) | Cannot reproduce |
-| 5 | **GTP Small** | Goods-to-Person | TA-RWARE (this repo, open-source) | **Reproduced** |
-| 6 | **GTP Large** | Goods-to-Person | TA-RWARE (this repo, open-source) | **Reproduced** |
+The paper evaluates **7 algorithms** across **6 warehouse configurations** — 42 results in total.
+Each configuration tests CTA (heuristic baseline) plus IAC, SNAC, SEAC, HIAC, HSNAC, HSEAC (6 RL algorithms).
 
-**We reproduce experiments 5 and 6 (2 out of 6).** Experiments 1–4 use Dematic's
-proprietary PTG simulator which is not publicly available.
+| # | Environment | Paradigm | Simulator | Reproducible? |
+|---|-------------|----------|-----------|--------------|
+| 1 | PTG Small    | Person-to-Goods | Dematic (commercial) | No — proprietary simulator |
+| 2 | PTG Medium   | Person-to-Goods | Dematic (commercial) | No — proprietary simulator |
+| 3 | PTG Large    | Person-to-Goods | Dematic (commercial) | No — proprietary simulator |
+| 4 | PTG Disjoint | Person-to-Goods | Dematic (commercial) | No — proprietary simulator |
+| 5 | **GTP Small** | Goods-to-Person | TA-RWARE (open-source) | **Yes** |
+| 6 | **GTP Large** | Goods-to-Person | TA-RWARE (open-source) | **Yes** |
 
-Within the 2 reproducible GTP configurations, we run **4 analyses**:
+**We target configurations 5 and 6 (2 of 6 environments).** PTG requires Dematic's
+commercial simulator which is not publicly available.
+
+### Algorithm Scope (within the 2 GTP configurations)
+
+Of the 7 algorithms the paper tests, we implement 2:
+
+| Algorithm | Paper result (Small GTP) | Our status | Method |
+|-----------|--------------------------|------------|--------|
+| CTA (baseline) | 52.7 ± 0.9 | **Done** (52.16 ± 0.54) | Rule-based heuristic — Exp 1, 2, 3, 4 |
+| IAC | 65.2 ± 0.5 | **In progress** (run Colab notebook) | Neural RL — `notebooks/iac_colab.ipynb` |
+| SNAC | 60.8 ± 0.7 | Not implemented | Requires full EPyMARL training run |
+| SEAC | 64.8 ± 0.4 | Not implemented | Requires full EPyMARL training run |
+| HIAC (best) | 66.7 ± 0.3 | Not implemented | Hierarchical RL — significant extra complexity |
+| HSNAC | 66.0 ± 0.7 | Not implemented | Hierarchical variant |
+| HSEAC | 64.6 ± 0.4 | Not implemented | Hierarchical variant |
+
+**Rationale for selecting IAC:** IAC is the simplest algorithm (no weight sharing, no hierarchy),
+uses the same neural architecture as all others, and is directly comparable to Table I. It
+demonstrates the core claim — *learned neural policy beats rule-based heuristic* — with the
+least implementation complexity.
+
+### Our 5 Experiments
+
+Within the 2 GTP configurations, we run **5 analyses** (4 heuristic + 1 RL):
 
 ---
 

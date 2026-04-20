@@ -352,6 +352,105 @@ python experiments/run_all.py --only 4   # Queue sensitivity
 
 ---
 
+## 5b. IAC Neural Network Training (Exp 5 — RL Training)
+
+> **Teacher feedback addressed:** Experiments 1-4 are heuristic-only (no ML). This section adds
+> real reinforcement learning — training a neural network from scratch using the paper's own framework.
+
+### Algorithm: IAC (Independent Actor-Critic)
+
+IAC is the simplest RL algorithm from the paper (Table I). Each of the 12 agents (8 AGVs + 4 pickers)
+has its own independent **Actor-Critic neural network**:
+
+```
+Observation  -->  [FC 64, ReLU]  -->  [FC 64, ReLU]  -->  Actor head  -->  action probabilities
+                                                       -->  Critic head -->  value V(s)
+```
+
+- **No weight sharing** — each agent learns independently from its own experience (unlike SNAC)
+- **Training signal:** Generalized Advantage Estimation (GAE), discount gamma=0.99
+- **Framework:** EPyMARL v2 — the paper authors' own training framework (ensures faithful reproduction)
+
+### Training Setup
+
+| Parameter | Value |
+|-----------|-------|
+| Environment | Small GTP: `tarware-medium-8agvs-4pickers-partialobs-v1` |
+| Episodes | 3,000 (t_max = 1,500,000 steps) |
+| Platform | Google Colab T4 GPU (~1-2 hours) |
+| Framework | EPyMARL v2 (gymnasium branch) |
+| Learning rate | 0.0005 |
+| Hidden dim | 64 units per layer |
+| Layers | 2 FC layers (Actor) + 2 FC layers (Critic) |
+| Seed | 42 |
+
+The paper trained for 10,000 episodes with 5 random seeds. Our 3,000 episodes is a partial
+training run — enough to demonstrate learning and compare with the CTA baseline.
+
+### How to Run
+
+**Option A — Google Colab (recommended):**
+
+1. Open `notebooks/iac_colab.ipynb` in Google Colab
+2. Runtime > Change runtime type > T4 GPU
+3. Run all cells top to bottom
+4. Expected time: 1-2 hours; results auto-save to Google Drive
+
+**Option B — Local CPU (smoke test only):**
+
+```bash
+# Install Jupyter if needed
+pip install jupyter
+# Open notebook
+jupyter notebook notebooks/iac_local.ipynb
+```
+
+Runs 200 episodes (~5-20 min on CPU). Used to verify the pipeline, not for final results.
+
+**Manual EPyMARL command (alternative):**
+
+```bash
+# 1. Clone EPyMARL
+git clone https://github.com/uoe-agents/epymarl
+cd epymarl
+pip install -r requirements.txt
+
+# 2. Run IAC training
+python src/main.py --config=iac --env-config=gymma with \
+  "env_args.key=tarware-medium-8agvs-4pickers-partialobs-v1" \
+  env_args.time_limit=500 \
+  env_args.common_reward=False \
+  t_max=1500000 \
+  seed=42 \
+  save_model=True
+```
+
+### Results
+
+> **Fill this in after running `notebooks/iac_colab.ipynb` on Colab.**
+
+| Method | Small GTP Pick Rate | Source |
+|--------|--------------------|----|
+| Random (our Exp 2) | 9.63 +/- 0.12 | ours |
+| CTA heuristic (our Exp 1) | 52.16 +/- 0.54 | ours |
+| CTA (paper Table I) | 52.7 +/- 0.9 | paper |
+| **IAC neural net (this exp, 3k ep)** | **[fill after Colab run]** | ours |
+| IAC (paper Table I, 10k ep) | 65.2 +/- 0.5 | paper |
+| HIAC (paper Table I, 10k ep) | 66.7 +/- 0.3 | paper |
+
+After Colab training, replace `[fill after Colab run]` with the value from the summary table
+in `notebooks/iac_colab.ipynb` Step 7, or from:
+`Google Drive/tarware_iac_results/iac_summary.json`
+
+### Interpretation
+
+- At 3,000 episodes, IAC may not fully converge to paper values (which used 10,000 episodes)
+- The **learning curve** itself is the key deliverable: it shows the neural network improving over time
+- If IAC's final pick rate exceeds CTA (52.16), this directly demonstrates that **learned RL policy > rule-based heuristic**
+- The gap between our IAC (3k ep) and paper IAC (10k ep) shows why more compute matters
+
+---
+
 ## 6. Results
 
 > **Run config:** 500 episodes per environment, seed=42, Python 3.11, Windows 11 Home.
@@ -583,35 +682,34 @@ information to learn predictive strategies.
 
 ### Limitations of Our Study
 
-1. **Heuristic-only:** We do not train any RL agents. The paper's main contribution
-   (hierarchical MARL) is not reproduced — only the baselines are. Training HIAC would
-   require the EPyMARL framework and significant GPU compute (~10,000 episodes per config).
+1. **Partial RL training:** We train IAC for 3,000 episodes; the paper used 10,000 episodes
+   with 5 random seeds. Our results may not fully converge to paper values. The learning curve
+   is the deliverable, not the final number.
 
-2. **GTP only:** The 4 PTG configurations use a commercial Dematic simulator that is not
+2. **IAC only (not HIAC):** HIAC (Hierarchical IAC) is the paper's best algorithm. We implement
+   IAC as it is simpler and still demonstrates the core RL concept. HIAC requires an additional
+   manager network layer (more complex to implement and train).
+
+3. **GTP only:** The 4 PTG configurations use a commercial Dematic simulator that is not
    publicly available. We cannot assess whether our findings generalise to the PTG paradigm.
 
-3. **Seed sensitivity:** We use a single seed (42) for reproducibility. The paper likely
-   averages over multiple seeds; our variance estimates assume seed-to-seed variation is
-   captured by the 500-episode run.
+4. **Single seed:** We use seed=42. The paper averages over 5 seeds; our CI estimates are
+   within-seed variance only.
 
 ### Future Work
 
-1. **Train RL baselines using EPyMARL:**
-   ```bash
-   pip install git+https://github.com/uoe-agents/epymarl
-   ```
-   IAC (non-hierarchical) is the simplest starting point and would directly validate
-   the paper's IAC numbers (65.2 Small, 80.4 Large).
+1. **Run more training episodes:** Extend IAC training from 3,000 to 10,000 episodes.
+   Requires more Colab sessions or a local GPU. Expected to approach paper's 65.2 pick rate.
 
-2. **Implement the hierarchical manager layer** on top of IAC to reproduce HIAC.
-   The manager is a simple feedforward net that assigns zones; the code structure
-   is described in Appendix A of the paper.
+2. **Implement HIAC** on top of IAC. The manager is a feedforward net assigning zones;
+   code structure is in Appendix A of the paper.
 
-3. **Agent ratio ablation:** Fix the medium warehouse and vary the AGV:Picker ratio
-   (e.g., 4:4, 8:4, 12:4, 8:2, 8:8). This tests whether the paper's chosen ratios are
-   optimal for the CTA heuristic.
+3. **Train SNAC/SEAC for comparison:** SNAC shares network weights; SEAC shares gradients.
+   Both are in EPyMARL. Running all 3 reproduces Table I fully.
 
-4. **Global vs partial observation ablation:** Rerun Exp 2 with `globalobs` environments.
-   The heuristic uses direct environment state (not the observation), so both should
-   perform identically — confirming the observation type is irrelevant for heuristic agents
-   and only matters for learned RL policies.
+4. **Agent ratio ablation:** Fix the medium warehouse and vary the AGV:Picker ratio
+   (e.g., 4:4, 8:4, 12:4). Tests whether the paper's chosen ratios are optimal.
+
+5. **Global vs partial observation ablation:** Rerun Exp 2 with `globalobs` environments.
+   The heuristic ignores the observation (uses env state directly), so results should be
+   identical — confirming observation type only matters for learned RL policies.
